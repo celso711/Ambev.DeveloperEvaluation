@@ -16,3 +16,11 @@
 /tests/Ambev.DeveloperEvaluation.Unit/bin/Debug/net8.0
 /tests/Ambev.DeveloperEvaluation.Unit/obj
 /.vs/Ambev.DeveloperEvaluation
+/bin/Debug
+/obj/Debug
+/src/Ambev.DeveloperEvaluation.Application/bin/Debug/net8.0
+/src/Ambev.DeveloperEvaluation.Common/bin/Debug/net8.0
+/src/Ambev.DeveloperEvaluation.Domain/bin/Debug/net8.0
+/src/Ambev.DeveloperEvaluation.IoC/bin/Debug/net8.0
+/src/Ambev.DeveloperEvaluation.ORM/bin/Debug/net8.0
+/src/Ambev.DeveloperEvaluation.WebApi/bin/Debug/net8.0
