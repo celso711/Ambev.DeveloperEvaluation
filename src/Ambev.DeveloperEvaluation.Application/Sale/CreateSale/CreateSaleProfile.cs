@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
+namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
 {
     /// <summary>
     /// Profile for mapping between Sale entity and CreateSaleResponse
@@ -20,8 +20,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
         /// </summary>
         public CreateSaleProfile()
         {
-            CreateMap<CreateSaleCommand, Sale>();
-            CreateMap<Sale, CreateSaleResult>();
+            CreateMap<CreateSaleCommand, Ambev.DeveloperEvaluation.Domain.Entities.Sale >();
+            CreateMap<Ambev.DeveloperEvaluation.Domain.Entities.Sale, CreateSaleResult>();
 
             CreateMap<SaleItemCommand, SaleItem>();
         }

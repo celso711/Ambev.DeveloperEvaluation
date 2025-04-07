@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.DeleteSale
+namespace Ambev.DeveloperEvaluation.Application.Sale.DeleteSale
 {
     /// <summary>
     /// Validator for DeleteSaleCommand

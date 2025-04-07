@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
+namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
 {
     /// <summary>
     /// Handler for processing CreateSaleCommand requests
@@ -46,7 +46,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
-            var sale = _mapper.Map<Sale>(command);
+            var sale = _mapper.Map<Domain.Entities.Sale>(command);
 
             foreach (var item in sale.Items)
             {

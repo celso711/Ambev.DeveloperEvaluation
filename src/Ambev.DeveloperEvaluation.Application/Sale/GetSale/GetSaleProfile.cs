@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale
+namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale
 {
     /// <summary>
     /// Profile for mapping between Sale entity and GetSaleResponse
@@ -19,7 +19,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale
         /// </summary>
         public GetSaleProfile()
         {
-            CreateMap<Sale, GetSaleResult>();
+            CreateMap<Ambev.DeveloperEvaluation.Domain.Entities.Sale, GetSaleResult>();
         }
     }
 }

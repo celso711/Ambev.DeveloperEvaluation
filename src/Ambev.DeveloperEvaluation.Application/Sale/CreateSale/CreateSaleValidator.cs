@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
+namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
 {
     public class CreateSaleCommandValidator : AbstractValidator<CreateSaleCommand>
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale
+namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale
 {
     /// <summary>
     /// Command for retrieving a sale by their ID
