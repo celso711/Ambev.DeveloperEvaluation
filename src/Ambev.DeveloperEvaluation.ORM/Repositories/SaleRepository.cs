@@ -1,14 +1,7 @@
-﻿using Ambev.DeveloperEvaluation.Common.Security;
-using Ambev.DeveloperEvaluation.Domain.Common;
+﻿using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories
 {
@@ -70,6 +63,35 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
 
             return existingSale;
         }
+        /// <summary>
+        /// Builds the filtered and paginated query for sales.
+        /// </summary>
+        private static IQueryable<Sale> BuildFilteredQuery(IQueryable<Sale> query, ListSaleFilter command)
+        {
+            if (command.StartDate.HasValue)
+                query = query.Where(s => s.SaleDate >= command.StartDate);
 
+            if (command.EndDate.HasValue)
+                query = query.Where(s => s.SaleDate <= command.EndDate);
+
+            if (command.CustomerId.HasValue)
+                query = query.Where(s => s.CustomerId == command.CustomerId);
+
+            if (command.BranchId.HasValue)
+                query = query.Where(s => s.BranchId == command.BranchId);
+
+            return query
+                .OrderByDescending(s => s.SaleDate)
+                .Skip((command.Page - 1) * command.PageSize)
+                .Take(command.PageSize);
+        }
+        /// <summary>
+        /// Retrieves sales based on filters and pagination.
+        /// </summary>
+        public async Task<List<Sale>> ListAllAsync(ListSaleFilter pagination, CancellationToken cancellationToken)
+        {
+            var query = _context.Sale.Include(s => s.Items).AsQueryable();
+            return await BuildFilteredQuery(query, pagination).AsNoTracking().ToListAsync();
+        }
     }
 }

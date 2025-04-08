@@ -1,10 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Common;
 using Ambev.DeveloperEvaluation.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.Domain.Repositories
 {
@@ -44,7 +39,14 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// <param name="id">The unique identifier of the sale</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>The sale if found, null otherwise</returns>
-       
+        Task<List<Sale>> ListAllAsync(ListSaleFilter pagination, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Deletes a sale from the repository
+        /// </summary>
+        /// <param name="id">The unique identifier of the sale to delete</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>True if the sale was deleted, false if not found</returns>
         Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     }
 }

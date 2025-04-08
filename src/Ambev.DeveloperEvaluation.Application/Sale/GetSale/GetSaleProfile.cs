@@ -1,13 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Application.Users.GetUser;
-using Ambev.DeveloperEvaluation.Domain.Entities;
-using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 
-namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale
+namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale
 {
     /// <summary>
     /// Profile for mapping between Sale entity and GetSaleResponse

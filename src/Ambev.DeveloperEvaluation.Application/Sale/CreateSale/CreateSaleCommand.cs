@@ -1,15 +1,7 @@
-﻿using Ambev.DeveloperEvaluation.Application.Sale.CreateSale;
-using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
-using Ambev.DeveloperEvaluation.Common.Validation;
-using FluentValidation;
+﻿using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
+namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
 {
     /// <summary>
     /// Represents the command to create a new sale.
