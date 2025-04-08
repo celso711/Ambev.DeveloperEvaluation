@@ -120,3 +120,4 @@
 /tests/Ambev.DeveloperEvaluation.Integration/bin/Release/net8.0/NSubstitute.dll
 /tests/Ambev.DeveloperEvaluation.Integration/bin/Release/net8.0
 /tests/Ambev.DeveloperEvaluation.Unit/bin/Release/net8.0
+/src/Ambev.DeveloperEvaluation.WebApi/logs/log-20250408.txt
