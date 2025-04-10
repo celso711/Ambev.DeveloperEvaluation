@@ -1,18 +1,19 @@
-﻿using AutoMapper;
+﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.GetSale
 {
     /// <summary>
     /// Profile for mapping between Sale entity and GetSaleResponse
     /// </summary>
-    public class GetSaleProfile : Profile
+    public sealed class GetSaleProfile : Profile
     {
-        /// <summary>
-        /// Initializes the mappings for GetSale operation
-        /// </summary>
         public GetSaleProfile()
         {
-            CreateMap<Ambev.DeveloperEvaluation.Domain.Entities.Sale, GetSaleResult>();
+            CreateMap<SaleItem, GetSaleItemResult>();
+
+            CreateMap<Sale, GetSaleResult>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
         }
     }
 }

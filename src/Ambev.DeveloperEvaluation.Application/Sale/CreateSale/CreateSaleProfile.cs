@@ -6,17 +6,23 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.CreateSale
     /// <summary>
     /// Profile for mapping between Sale entity and CreateSaleResponse
     /// </summary>
-    public class CreateSaleProfile : Profile
+    public sealed class CreateSaleProfile : Profile
     {
-        /// <summary>
-        /// Initializes the mappings for CreateSale operation
-        /// </summary>
         public CreateSaleProfile()
         {
-            CreateMap<CreateSaleCommand, Ambev.DeveloperEvaluation.Domain.Entities.Sale>();
-            CreateMap<Ambev.DeveloperEvaluation.Domain.Entities.Sale, CreateSaleResult>();
+            CreateMap<CreateSaleCommand, Sale>()
+                .ForMember(dest => dest.SaleNumber, opt => opt.Ignore())
+                .ForMember(dest => dest.SaleDate, opt => opt.Ignore())
+                .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
+                .ForMember(dest => dest.IsCancelled, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
 
-            CreateMap<SaleItemCommand, SaleItem>();
+            CreateMap<SaleItemCommand, SaleItem>()
+                .ForMember(dest => dest.SaleId, opt => opt.Ignore())
+                .ForMember(dest => dest.Discount, opt => opt.Ignore())
+                .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }
 }
