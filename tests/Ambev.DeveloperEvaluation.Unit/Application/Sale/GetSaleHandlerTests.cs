@@ -1,6 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.GetSale;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
-using Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData;
 using AutoMapper;
 using FluentAssertions;
 using NSubstitute;
@@ -9,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Unit.Application.TestData;
 
 
 namespace Ambev.DeveloperEvaluation.Unit.Application.Sale

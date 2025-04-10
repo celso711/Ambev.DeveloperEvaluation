@@ -2,7 +2,7 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.ORM.Repositories;
-using Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData;
+using Ambev.DeveloperEvaluation.Unit.Application.TestData;
 using FluentAssertions;
 using NSubstitute;
 using System;

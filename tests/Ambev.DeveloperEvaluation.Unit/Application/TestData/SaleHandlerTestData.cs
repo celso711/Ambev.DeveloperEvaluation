@@ -2,9 +2,10 @@
 using Ambev.DeveloperEvaluation.Application.Sales.UpdateSale;
 using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
+using Ambev.DeveloperEvaluation.Unit.Application.Sale;
 using Bogus;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData
+namespace Ambev.DeveloperEvaluation.Unit.Application.TestData
 {
     /// <summary>
     /// Provides test data for <see cref="CreateSaleHandlerTests"/>, <see cref="GetSaleHandlerTests"/>, <see cref="UpdateSaleHandlerTests"/>, and <see cref="DeleteSaleHandlerTests"/>.
@@ -35,8 +36,8 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData
         /// <summary>
         /// Faker instance to generate <see cref="Sale"/> entities with randomized data.
         /// </summary>
-        private static readonly Faker<Ambev.DeveloperEvaluation.Domain.Entities.Sale> saleFaker 
-            = new Faker<Ambev.DeveloperEvaluation.Domain.Entities.Sale>()
+        private static readonly Faker<DeveloperEvaluation.Domain.Entities.Sale> saleFaker 
+            = new Faker<DeveloperEvaluation.Domain.Entities.Sale>()
             .RuleFor(s => s.Id, f => f.Random.Guid())
             .RuleFor(s => s.CustomerId, f => f.Random.Guid())
             .RuleFor(s => s.CustomerName, f => f.Name.FullName())
@@ -59,12 +60,12 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData
         /// <summary>
         /// Generates a valid <see cref="Sale"/> entity with randomized data.
         /// </summary>
-        public static Ambev.DeveloperEvaluation.Domain.Entities.Sale GenerateSale() => saleFaker.Generate();
+        public static DeveloperEvaluation.Domain.Entities.Sale GenerateSale() => saleFaker.Generate();
 
         /// <summary>
         /// Generates and saves a <see cref="Sale"/> entity to the repository before deletion (DDD best practice).
         /// </summary>
-        public static async Task<Ambev.DeveloperEvaluation.Domain.Entities.Sale> GenerateAndSaveSaleAsync(ISaleRepository saleRepository, CancellationToken cancellationToken)
+        public static async Task<DeveloperEvaluation.Domain.Entities.Sale> GenerateAndSaveSaleAsync(ISaleRepository saleRepository, CancellationToken cancellationToken)
         {
             var createCommand = GenerateValidCreateCommand();
             var sale = MapToSale(createCommand);
@@ -76,7 +77,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData
         /// <summary>
         /// Maps a <see cref="CreateSaleCommand"/> to a <see cref="Sale"/> aggregate root.
         /// </summary>
-        private static Ambev.DeveloperEvaluation.Domain.Entities.Sale MapToSale(CreateSaleCommand command)
+        private static DeveloperEvaluation.Domain.Entities.Sale MapToSale(CreateSaleCommand command)
         {
             var items = new List<SaleItem>();
 
@@ -91,11 +92,11 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData
                     Quantity = itemCommand.Quantity,
                     UnitPrice = itemCommand.UnitPrice,
                     Discount = discount,
-                    TotalAmount = (itemCommand.UnitPrice * itemCommand.Quantity) - discount
+                    TotalAmount = itemCommand.UnitPrice * itemCommand.Quantity - discount
                 });
             }
 
-            return new Ambev.DeveloperEvaluation.Domain.Entities.Sale
+            return new DeveloperEvaluation.Domain.Entities.Sale
             {
                 Id = Guid.NewGuid(),
                 CustomerId = Guid.Parse(command.CustomerId),
@@ -112,7 +113,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData
         /// Generates a valid <see cref="Sale"/> entity with the specified ID.
         /// </summary>
         /// <param name="saleId">The ID to assign to the generated sale.</param>
-        public static Ambev.DeveloperEvaluation.Domain.Entities.Sale GenerateSale(Guid saleId)
+        public static DeveloperEvaluation.Domain.Entities.Sale GenerateSale(Guid saleId)
         {
             var sale = saleFaker.Generate();
             sale.Id = saleId;
@@ -159,7 +160,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Application.Sale.TestData
                 .RuleFor(i => i.Quantity, f => f.Random.Int(1, 20))
                 .RuleFor(i => i.UnitPrice, f => f.Finance.Amount(10, 500))
                 .RuleFor(i => i.Discount, (f, i) => CalculateDiscount(i.Quantity, i.UnitPrice))
-                .RuleFor(i => i.TotalAmount, (f, i) => (i.UnitPrice * i.Quantity) - i.Discount);
+                .RuleFor(i => i.TotalAmount, (f, i) => i.UnitPrice * i.Quantity - i.Discount);
 
             return itemFaker.Generate(count);
         }

@@ -38,15 +38,18 @@ public class JwtTokenGenerator : IJwtTokenGenerator
     /// <exception cref="ArgumentNullException">Thrown when user or secret key is not provided.</exception>
     public string GenerateToken(IUser user)
     {
+        // Desativa o mapeamento automático dos claim types durante a geração
+        JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["Jwt:SecretKey"]);
 
         var claims = new[]
         {
-           new Claim(ClaimTypes.NameIdentifier, user.Id),
-           new Claim(ClaimTypes.Name, user.Username),
-           new Claim(ClaimTypes.Role, user.Role)
-       };
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Name, user.Username),
+        new Claim(ClaimTypes.Role, user.Role.ToString())
+    };
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

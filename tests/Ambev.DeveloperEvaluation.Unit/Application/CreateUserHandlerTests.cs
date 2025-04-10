@@ -1,6 +1,7 @@
 using Ambev.DeveloperEvaluation.Application.Users.CreateUser;
 using Ambev.DeveloperEvaluation.Common.Security;
 using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Enums;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Unit.Domain;
 using AutoMapper;
@@ -32,6 +33,113 @@ public class CreateUserHandlerTests
         _handler = new CreateUserHandler(_userRepository, _mapper, _passwordHasher);
     }
 
+    [Fact(DisplayName = "Should throw ValidationException when command is invalid")]
+    public async Task Handle_WithInvalidCommand_ShouldThrowValidationException()
+    {
+        // Arrange
+        var command = new CreateUserCommand
+        {
+            Username = "", // inválido
+            Email = "invalid-email",
+            Password = "123", // inválido
+            Phone = "123",
+            Role = UserRole.None,
+            Status = UserStatus.Unknown
+        };
+
+        var userRepository = Substitute.For<IUserRepository>();
+        var passwordHasher = Substitute.For<IPasswordHasher>();
+        var mapper = Substitute.For<IMapper>();
+
+        var handler = new CreateUserHandler(userRepository, mapper, passwordHasher);
+
+        // Act
+        var act = async () => await handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<FluentValidation.ValidationException>();
+    }
+
+    [Fact(DisplayName = "Should throw when email is already registered")]
+    public async Task Handle_WithExistingEmail_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var command = new CreateUserCommand
+        {
+            Username = "jane",
+            Email = "jane@example.com",
+            Password = "Test@123",
+            Phone = "+5511999999999",
+            Role = UserRole.Admin,
+            Status = UserStatus.Active
+        };
+
+        var existingUser = new User { Email = command.Email };
+
+        var userRepository = Substitute.For<IUserRepository>();
+        userRepository.GetByEmailAsync(command.Email, Arg.Any<CancellationToken>())
+                      .Returns(existingUser);
+
+        var passwordHasher = Substitute.For<IPasswordHasher>();
+        var mapper = Substitute.For<IMapper>();
+
+        var handler = new CreateUserHandler(userRepository, mapper, passwordHasher);
+
+        // Act
+        var act = async () => await handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage($"User with email {command.Email} already exists");
+    }
+
+    [Fact(DisplayName = "Should create a new user when data is valid and email not used")]
+    public async Task Handle_WithValidCommand_ShouldCreateUser()
+    {
+        // Arrange
+        var command = new CreateUserCommand
+        {
+            Username = "john_doe",
+            Email = "john@example.com",
+            Password = "Test@123",
+            Phone = "+5511999999999",
+            Role = UserRole.Customer,
+            Status = UserStatus.Active
+        };
+
+        var userRepository = Substitute.For<IUserRepository>();
+        userRepository.GetByEmailAsync(command.Email, Arg.Any<CancellationToken>())
+                      .Returns((User)null);
+
+        var passwordHasher = Substitute.For<IPasswordHasher>();
+        passwordHasher.HashPassword(command.Password).Returns("hashed-password");
+
+        var createdUser = new User
+        {
+            Id = Guid.NewGuid(),
+            Username = command.Username,
+            Email = command.Email,
+            Password = "hashed-password",
+            Role = command.Role,
+            Status = command.Status
+        };
+
+        userRepository.CreateAsync(Arg.Any<User>(), Arg.Any<CancellationToken>())
+                      .Returns(createdUser);
+
+        var mapper = Substitute.For<IMapper>();
+        mapper.Map<User>(command).Returns(createdUser);
+        mapper.Map<CreateUserResult>(createdUser).Returns(new CreateUserResult { Id = createdUser.Id });
+
+        var handler = new CreateUserHandler(userRepository, mapper, passwordHasher);
+
+        // Act
+        var result = await handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Id.Should().Be(createdUser.Id);
+    }
     /// <summary>
     /// Tests that a valid user creation request is handled successfully.
     /// </summary>
