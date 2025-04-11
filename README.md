@@ -61,7 +61,7 @@ http://localhost:5119/swagger
 To run the tests:
 
 ```bash
-dotnet test
+.\coverage-report.bat
 ```
 
 Test results will be available in the `TestResults/` directory.
